@@ -25,27 +25,6 @@ For these example events, a Nostr client (resource owner) will only display sens
 ```json
 {
   "kind": 30402,
-  "created_at": 1675642635,
-  "tags": [
-    ["d", "sensitive-content"],
-    ["title", "Sensitive Content"],
-    ["image", "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/RATED_R.svg/256px-RATED_R.svg.png)", "256x256"],
-    ["summary", "Sensitive content on Ipsum App"],
-    [
-      "a",
-      "30009:<badge issuer pubkey>:age-verified",
-      "wss://relay.nostr.org"
-    ]
-  ],
-  "pubkey": "<resource owner pubkey>",
-  "id": "..."
-}
-```
-
-*Classified Listing*
-```json
-{
-  "kind": 30402,
   "created_at": ...,
   "tags": [
     ["d", "sensitive-content"],

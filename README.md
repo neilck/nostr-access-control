@@ -25,7 +25,7 @@ For these example events, a Nostr client (resource owner) will only display sens
 ```json
 {
   "kind": 30402,
-  "created_at": <unix timestamp>,
+  "created_at": 1675238400,
   "tags": [
     ["d", "sensitive-content"],
     ["title", "Sensitive Content"],
@@ -44,7 +44,7 @@ For these example events, a Nostr client (resource owner) will only display sens
 ```json
 {
   "kind": 30009,
-  "created_at": <unix timestamp>,
+  "created_at": 1672560000,
   "tags": [
     ["d", "over21"],
     ["name", "Over 21"],
@@ -62,7 +62,7 @@ For these example events, a Nostr client (resource owner) will only display sens
 ```json
 {
   "kind": 8,
-  "created_at": <unix timestamp>,
+  "created_at": 1677657600,
   "tags": [
     ["a", "30009:<badge issuer pubkey>:over21"],
     ["p", "<user pubkey>", "wss://relay"],

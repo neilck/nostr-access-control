@@ -39,6 +39,7 @@ For these example events, a Nostr client (resource owner) will only display sens
 }
 ```
 
+
 *Badge Definition*
 ```json
 {
@@ -55,6 +56,7 @@ For these example events, a Nostr client (resource owner) will only display sens
   "sig": "...",
 }
 ```
+
 
 *Badge Award*
 ```json

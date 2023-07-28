@@ -14,9 +14,35 @@ There are 3 roles in decentralized access control.
 ### Events
 Resource owners define resources by publishing `Classified Listings` events (NIP-99).
 
-Resource owners specify required badges by including `a tags` in `Classified Listing` event pointing to Badge Definition events (NIP-58).
+Resource owners specify required badges by including `a tags` in `Classified Listings` event pointing to Badge Definition events (NIP-58).
 
 Badge issuers define and award badges to users by publishing Badge Definition and Award Badge events (NIP-58).
+
+### Event Examples
+For these example events, a Nostr client (resource owner) will only display sensitive content (e.g. NIP-36) if a user has been awarded an Age Verified badge, issued by a indepdendent service (badge issuer).
+
+*Classified Listing*
+```json
+{
+  "kind": 30402,
+  "created_at": 1675642635,
+  "tags": [
+    ["d", "sensitive-content"],
+    ["title", "Sensitive Content"],
+    ["image", "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/RATED_R.svg/256px-RATED_R.svg.png)", "256x256"],
+    ["summary", "Sensitive content on Ipsum App"],
+    [
+      "a",
+      "30009:<badge issuer pubkey>:age-verified",
+      "wss://relay.nostr.org"
+    ]
+  ],
+  "pubkey": "<resource owner pubkey>",
+  "id": "..."
+}
+```
+
+Alice has a client will only display senstitive content (NIP-36) if a user has been awarded a badge by Bob.
 
 ### Access Control Workflow
 Overview of how an app can verify a user's eligibility before granting access to a resource

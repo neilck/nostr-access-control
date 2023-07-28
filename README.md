@@ -1,4 +1,4 @@
-# Decenralized Access Control with Nostr (nostr-access-control)
+# Decentralized Access Control with Nostr (nostr-access-control)
 
 This proposal specifies how to implement decentralized access control with Nostr. 
 

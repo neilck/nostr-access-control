@@ -19,7 +19,7 @@ Resource owners specify required badges by including `a tags` in `Classified Lis
 Badge issuers define and award badges to users by publishing `Badge Definition` and `Award Badge` events (NIP-58).
 
 ### Event Examples
-For these example events, a Nostr client (resource owner) will only display sensitive content (e.g. NIP-36) if a user has been awarded an Age Verified badge, issued by a indepdendent service (badge issuer).
+For these example events, a Nostr client (resource owner) will only display sensitive content (e.g. NIP-36) if a user has been awarded an Over 21 badge, issued by a indepdendent service (badge issuer).
 
 *Classified Listing*
 ```json

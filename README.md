@@ -1,2 +1,30 @@
-# nostr-access-control
-Decentralized access control with Nostr.
+# Decenralized Access Control with Nostr (nostr-access-control)
+
+This proposal specifies how to implement decentralized access control with Nostr. 
+
+Access control is the process of determining if a user has rights to access a resource. 
+
+### Roles
+There are 3 roles in decentralized access control.
+
+- `Resource Owner` - A resource owner defines a resource and required badges to access.
+- `Badge Issuer` - A badge issuer defines badges and awards badges to users.
+- `User` - A user applies to access a resource based on their badges.
+
+### Events
+Resource owners define resources by publishing `Classified Listings` events (NIP-99).
+
+Resource owners specify required badges by including `a tags` in `Classified Listing` event pointing to Badge Definition events (NIP-58).
+
+Badge issuers define and award badges to users by publishing Badge Definition and Award Badge events (NIP-58).
+
+### Access Control Workflow
+Overview of how an app can verify a user's eligibility before granting access to a resource
+
+1. Authenicate that user owns a public key (e.g. successful user login or Nostr Connect).
+2. For given resource, get Classified Listing event and related Badge Definition events referenced in `a tags`.
+3. For each Badge Definition event, get related Badge Award events awarded to user's public key.
+4. Grant access if all badges awarded, inform user of missing badges if not.
+
+
+

@@ -12,7 +12,7 @@ let common = {
 esbuild
   .build({
     ...common,
-    outfile: 'lib/esm/nostr.mjs',
+    outfile: 'lib/esm/nostr-ac.mjs',
     format: 'esm',
     packages: 'external'
   })
@@ -26,7 +26,7 @@ esbuild
 esbuild
   .build({
     ...common,
-    outfile: 'lib/nostr.cjs.js',
+    outfile: 'lib/nostr-ac.cjs.js',
     format: 'cjs',
     packages: 'external'
   })
@@ -35,9 +35,9 @@ esbuild
 esbuild
   .build({
     ...common,
-    outfile: 'lib/nostr.bundle.js',
+    outfile: 'lib/nostr-ac.bundle.js',
     format: 'iife',
-    globalName: 'NostrTools',
+    globalName: 'NostrAccessControl',
     define: {
       window: 'self',
       global: 'self',

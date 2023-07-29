@@ -6,11 +6,11 @@
     "./lib/**/*"
   ],
   "types": "./lib/index.d.ts",
-  "main": "lib/nostr.cjs.js",
-  "module": "lib/esm/nostr.mjs",
+  "main": "lib/nostr-ac.cjs.js",
+  "module": "lib/esm/nostr-ac.mjs",
   "exports": {
-    "import": "./lib/esm/nostr.mjs",
-    "require": "./lib/nostr.cjs.js",
+    "import": "./lib/esm/nostr-ac.mjs",
+    "require": "./lib/nostr-ac.cjs.js",
     "types": "./lib/index.d.ts"
   },
   "license": "Unlicense",

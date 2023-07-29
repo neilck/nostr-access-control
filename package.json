@@ -38,5 +38,8 @@
     "ts-jest": "^29.1.0",
     "tsd": "^0.22.0",
     "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "nostr-tools": "^1.13.1"
   }
 }

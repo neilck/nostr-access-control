@@ -1,1 +1,1 @@
-export * from './keys.ts'
+export * from './nip99.ts'

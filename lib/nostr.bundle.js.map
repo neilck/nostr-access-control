@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../index.ts", "../keys.ts"],
-  "sourcesContent": ["export * from './keys.ts'\n", "export function generatePrivateKey(): string {\n  return 'private'\n}\n\nexport function getPublicKey(privateKey: string): string {\n  return 'public'\n}\n"],
-  "mappings": ";;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;;;ACAO,WAAS,qBAA6B;AAC3C,WAAO;AAAA,EACT;AAEO,WAAS,aAAa,YAA4B;AACvD,WAAO;AAAA,EACT;",
-  "names": []
-}

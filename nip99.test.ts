@@ -1,29 +1,23 @@
 import {getPublicKey} from 'nostr-tools'
-import {classifiedListing} from './nip99'
+import {classifiedListingEvent} from './nip99'
+import {resourceOwnerPrivateKey} from './test-data'
 
 test('create classified listing event', () => {
-  // d: string,
-  // title: string,
-  // summary: string,
-  // image: string,
-  // a: string,
-  // privateKey: string
-  const privateKey =
-    'd217c1ff2f8a65c3e3a1740db3b9f58b8c848bb45e26d00ed4714e4a0f4ceecf'
+  const privateKey = resourceOwnerPrivateKey
   const publicKey = getPublicKey(privateKey)
 
-  let event = classifiedListing(
-    'sensitive-content',
-    'Sensitive Content',
-    'Sensitive content on Ipsum App',
-    'https://ipsum.com/rated-r.png',
-    [
+  let event = classifiedListingEvent({
+    d: 'sensitive-content',
+    title: 'Sensitive Content',
+    summary: 'Sensitive content on Ipsum App',
+    image: 'https://ipsum.com/rated-r.png',
+    badgeDefs: [
       '30009:<badge issuer pubkey>:over21',
       '30009:<badge issuer pubkey>:notabot'
     ],
-    ['wss://relay', 'wss://relay'],
+    badgeDefRelays: ['wss://relay', 'wss://relay'],
     privateKey
-  )
+  })
 
   const template = {
     content: '',

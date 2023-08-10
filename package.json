@@ -1,6 +1,6 @@
 {
   "name": "nostr-access-control",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "This proposal specifies how to implement decentralized access control with Nostr.",
   "files": [
     "./lib/**/*"

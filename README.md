@@ -4,6 +4,12 @@ This library implements decentralized access control with Nostr.
 
 Access control is the process of determining if a user has rights to access a resource.
 
+### Developer Guide
+
+- Install with `npm -i nostr-access-control`
+- Clone repo and run tests using Jest `jest -t "sample"`
+- Compile using Just
+
 ### Roles
 
 There are 3 roles in decentralized access control.
@@ -78,12 +84,12 @@ _Badge Award_
 ```
 
 ### verifyEligibility
+
 verifyEligibility function takes in user's pubkey, the classified listing event, awarded badge events, and returns if user has all required badges.
 
 Also returns errors detected during validation of events.
 
 Can run with command: jest -t "sample"
-
 
 ```js
 const result = verifyEligibility({
@@ -115,10 +121,4 @@ if (badges) {
     }
   })
 }
-    
 ```
-### Developer Guide
-Run tests using Jest
-Compile using Just
-
-

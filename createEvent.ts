@@ -1,7 +1,7 @@
 import {getSignature, getEventHash, getPublicKey, Kind} from 'nostr-tools'
 
 /**
- * Returns a Badge Definition event
+ * Returns a NIP-58 Badge Definition event
  * @param props
  * @returns
  */
@@ -28,11 +28,15 @@ export function badgeDefinitionEvent(props: {
 
   event.id = getEventHash(event)
   event.sig = getSignature(event, privateKey)
-  console.log(JSON.stringify(event))
 
   return event
 }
 
+/**
+ * Returns a NIP-58 badgeAwardEvent
+ * @param props
+ * @returns
+ */
 export function badgeAwardEvent(props: {
   badgeDef: string
   awardedPubkey: string
@@ -53,6 +57,45 @@ export function badgeAwardEvent(props: {
   event.id = getEventHash(event)
   event.sig = getSignature(event, privateKey)
   console.log(JSON.stringify(event))
+
+  return event
+}
+
+/**
+ * Returns a NIP-99 Classified Listing event
+ * @param props
+ * @returns
+ */
+export function classifiedListingEvent(props: {
+  d: string
+  title: string
+  summary: string
+  image: string
+  badgeDefs: string[]
+  badgeDefRelays: string[]
+  privateKey: string
+}) {
+  const {d, title, summary, image, badgeDefs, badgeDefRelays, privateKey} =
+    props
+  let event: any = {
+    kind: 30402,
+    created_at: Math.floor(Date.now() / 1000),
+    tags: [
+      ['d', d],
+      ['title', title],
+      ['summary', summary],
+      ['image', image]
+    ],
+    content: '',
+    pubkey: getPublicKey(privateKey)
+  }
+
+  for (let i = 0; i < badgeDefs.length; i++) {
+    event.tags.push(['a', badgeDefs[i], badgeDefRelays[i]])
+  }
+
+  event.id = getEventHash(event)
+  event.sig = getSignature(event, privateKey)
 
   return event
 }

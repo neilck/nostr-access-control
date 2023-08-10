@@ -1,6 +1,6 @@
 # Decentralized Access Control with Nostr (nostr-access-control)
 
-This proposal specifies how to implement decentralized access control with Nostr.
+This library implements decentralized access control with Nostr.
 
 Access control is the process of determining if a user has rights to access a resource.
 
@@ -77,11 +77,48 @@ _Badge Award_
 }
 ```
 
-### Access Control Workflow
+### verifyEligibility
+verifyEligibility function takes in user's pubkey, the classified listing event, awarded badge events, and returns if user has all required badges.
 
-Overview of how an app can verify a user's eligibility before granting access to a resource
+Also returns errors detected during validation of events.
 
-1. Authenicate that user owns a public key (outside the scope of this project).
-2. For given resource, get Classified Listing event and related Badge Definition events referenced in `a tags`.
-3. For each Badge Definition event, get related Badge Award events awarded to user's public key.
-4. Grant access if all badges awarded, optionally inform user of missing badges if not.
+Can run with command: jest -t "sample"
+
+
+```js
+const result = verifyEligibility({
+  userPublicKey: userPublicKey,
+  classifiedListingEvent: classifiedListingTemplate,
+  badgeAwardEvents: [badgeAwardTemplate]
+})
+
+const {isEligible, badges, errors} = result
+
+if (isEligible) console.log('user is eligible to access the resource')
+else {
+  console.log('user is not eligible to access the resource')
+}
+
+if (errors) {
+  console.log(`Overall errors: ${errors}`)
+}
+
+if (badges) {
+  badges.forEach(badge => {
+    const {d, isValid, errors} = badge
+    if (isValid) {
+      console.log(`User awarded required badge ${badge.d}`)
+    } else {
+      console.log(
+        `Error(s) with awarded badge ${badge.d}. Errors: ${badge.errors}`
+      )
+    }
+  })
+}
+    
+```
+### Developer Guide
+Run tests using Jest
+Compile using Just
+
+

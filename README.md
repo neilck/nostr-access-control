@@ -4,7 +4,7 @@ This library implements decentralized access control with Nostr.
 
 Access control is the process of determining if a user has rights to access a resource, consisting of authentication followed by authorization. Authentication in Nostr is simple: signing with a private key proves ownership of an associated public key. Authorization can be achieved by using badge events.
 
-Authorization starts with a resource owner defining an accesible resource by publishing a classified listing event. They include eligibility criteria by including one or more "a tags" to the event referencing badge definition events. A client determines a user's eligibility by checking if the user has been awarded all the required badges.
+Authorization starts with a resource owner defining an accessible resource by publishing a classified listing event. They include eligibility criteria by including one or more "a tags" to the event referencing badge definition events. A client determines a user's eligibility by checking if the user has been awarded all the required badges.
 
 Acting as a badge issuer, the resource owner can code eligibility logic within their application before awarding a required badge to a user.
 

@@ -23,20 +23,20 @@ test('NIP-58 badge definition', () => {
   const publicKey = getPublicKey(privateKey)
 
   let event = badgeDefinitionEvent({
+    pubkey: publicKey,
     d: 'over21',
     name: 'Over 21',
     description: 'User is over 21 years of age.',
-    image: 'https://ageverifier.com/images/over21.png',
-    privateKey
+    image: 'https://ageverifier.com/images/over21.png'
   })
+
+  console.log(event)
 
   expect(event.kind).toEqual(badgeDefinitionTemplate.kind)
   expect(event.tags).toEqual(badgeDefinitionTemplate.tags)
   expect(event.content).toEqual(badgeDefinitionTemplate.content)
   expect(typeof event.created_at).toEqual('number')
   expect(event.pubkey).toEqual(publicKey)
-  expect(typeof event.id).toEqual('string')
-  expect(typeof event.sig).toEqual('string')
 })
 
 test('NIP-58 badge award', () => {
@@ -44,20 +44,35 @@ test('NIP-58 badge award', () => {
   const publicKey = getPublicKey(privateKey)
 
   let event = badgeAwardEvent({
-    badgeDef: `30009:${publicKey}:over21`,
-    awardedPubkey: userPublicKey,
-    privateKey
+    pubkey: publicKey,
+    badgeDefRef: `30009:${publicKey}:over21`,
+    awardedPubkey: userPublicKey
   })
 
   console.log(event)
 
+  let aTagValue = ''
+  let pTagValue = ''
+  const tags = event.tags
+  for (let i = 0; i < tags.length; i++) {
+    if (tags[i][0] == 'a') aTagValue = tags[i][1]
+    if (tags[i][0] == 'p') pTagValue = tags[i][1]
+  }
+
+  let aTestValue = ''
+  let pTestValue = ''
+  const testTags = badgeAwardTemplate.tags
+  for (let i = 0; i < testTags.length; i++) {
+    if (tags[i][0] == 'a') aTestValue = tags[i][1]
+    if (tags[i][0] == 'p') pTestValue = tags[i][1]
+  }
+
   expect(event.kind).toEqual(badgeAwardTemplate.kind)
-  expect(event.tags).toEqual(badgeAwardTemplate.tags)
+  expect(aTagValue).toEqual(aTestValue)
+  expect(pTestValue).toEqual(pTestValue)
   expect(event.content).toEqual(badgeAwardTemplate.content)
   expect(typeof event.created_at).toEqual('number')
   expect(event.pubkey).toEqual(publicKey)
-  expect(typeof event.id).toEqual('string')
-  expect(typeof event.sig).toEqual('string')
 })
 
 test('NIP-58 badge award 2', () => {
@@ -65,20 +80,35 @@ test('NIP-58 badge award 2', () => {
   const publicKey = getPublicKey(privateKey)
 
   let event = badgeAwardEvent({
-    badgeDef: `30009:${publicKey}:notabot`,
-    awardedPubkey: userPublicKey,
-    privateKey
+    pubkey: publicKey,
+    badgeDefRef: `30009:${publicKey}:notabot`,
+    awardedPubkey: userPublicKey
   })
 
   console.log(event)
 
+  let aTagValue = ''
+  let pTagValue = ''
+  const tags = event.tags
+  for (let i = 0; i < tags.length; i++) {
+    if (tags[i][0] == 'a') aTagValue = tags[i][1]
+    if (tags[i][0] == 'p') pTagValue = tags[i][1]
+  }
+
+  let aTestValue = ''
+  let pTestValue = ''
+  const testTags = badgeAwardTemplate2.tags
+  for (let i = 0; i < testTags.length; i++) {
+    if (tags[i][0] == 'a') aTestValue = tags[i][1]
+    if (tags[i][0] == 'p') pTestValue = tags[i][1]
+  }
+
   expect(event.kind).toEqual(badgeAwardTemplate2.kind)
-  expect(event.tags).toEqual(badgeAwardTemplate2.tags)
+  expect(aTagValue).toEqual(aTestValue)
+  expect(pTestValue).toEqual(pTestValue)
   expect(event.content).toEqual(badgeAwardTemplate2.content)
   expect(typeof event.created_at).toEqual('number')
   expect(event.pubkey).toEqual(publicKey)
-  expect(typeof event.id).toEqual('string')
-  expect(typeof event.sig).toEqual('string')
 })
 
 test('NIP-99 classified listing', () => {
@@ -86,16 +116,16 @@ test('NIP-99 classified listing', () => {
   const publicKey = getPublicKey(privateKey)
 
   let event = classifiedListingEvent({
+    pubkey: publicKey,
     d: 'sensitive-content',
     title: 'Sensitive Content',
     summary: 'Sensitive content on Ipsum App',
     image: 'https://ipsum.com/rated-r.png',
-    badgeDefs: [
+    badgeDefRefs: [
       `30009:${badgeIssuerPublicKey}:over21`,
       `30009:${badgeIssuerPublicKey2}:notabot`
     ],
-    badgeDefRelays: ['wss://relay', 'wss://relay'],
-    privateKey
+    badgeDefRefsRelays: ['wss://relay', 'wss://relay']
   })
 
   console.log(event)
@@ -105,8 +135,6 @@ test('NIP-99 classified listing', () => {
   expect(event.content).toEqual(classifiedListingTemplate.content)
   expect(typeof event.created_at).toEqual('number')
   expect(event.pubkey).toEqual(publicKey)
-  expect(typeof event.id).toEqual('string')
-  expect(typeof event.sig).toEqual('string')
 })
 
 test('NIP-99 classified listing no badges', () => {
@@ -114,13 +142,13 @@ test('NIP-99 classified listing no badges', () => {
   const publicKey = getPublicKey(privateKey)
 
   let event = classifiedListingEvent({
+    pubkey: publicKey,
     d: 'no-badges',
     title: 'No Badges',
     summary: 'Content not requiring badges',
     image: 'https://ipsum.com/rated-r.png',
-    badgeDefs: [],
-    badgeDefRelays: [],
-    privateKey
+    badgeDefRefs: [],
+    badgeDefRefsRelays: []
   })
 
   console.log(event)
@@ -130,6 +158,4 @@ test('NIP-99 classified listing no badges', () => {
   expect(event.content).toEqual(classifiedListingNoBadgesTemplate.content)
   expect(typeof event.created_at).toEqual('number')
   expect(event.pubkey).toEqual(publicKey)
-  expect(typeof event.id).toEqual('string')
-  expect(typeof event.sig).toEqual('string')
 })

@@ -2,7 +2,8 @@ import {getPublicKey} from 'nostr-tools'
 import {
   badgeDefinitionEvent,
   badgeAwardEvent,
-  classifiedListingEvent
+  classifiedListingEvent,
+  rawPrivateListingData
 } from './createEvent'
 import {
   badgeIssuerPrivateKey,
@@ -15,7 +16,8 @@ import {
   badgeAwardTemplate2,
   badgeDefinitionTemplate,
   classifiedListingTemplate,
-  classifiedListingNoBadgesTemplate
+  classifiedListingNoBadgesTemplate,
+  rawPrivateListingDataTemplate
 } from './test-data'
 
 test('NIP-58 badge definition', () => {
@@ -156,6 +158,33 @@ test('NIP-99 classified listing no badges', () => {
   expect(event.kind).toEqual(classifiedListingNoBadgesTemplate.kind)
   expect(event.tags).toEqual(classifiedListingNoBadgesTemplate.tags)
   expect(event.content).toEqual(classifiedListingNoBadgesTemplate.content)
+  expect(typeof event.created_at).toEqual('number')
+  expect(event.pubkey).toEqual(publicKey)
+})
+
+test('raw private listing data', () => {
+  const privateKey = resourceOwnerPrivateKey
+  const publicKey = getPublicKey(privateKey)
+
+  let event = rawPrivateListingData(
+    {
+      pubkey: publicKey,
+      clEventRef:
+        '30402:6af0f9de588f2c53cedcba26c5e2402e0d0aa64ec7b47c9f8d97b5bc562bab5f:sensitive-content',
+      clEventRefRelay: 'wss://relay'
+    },
+    {
+      summary: 'Use the following code at the link below.',
+      link: 'https://www.domain.com/private',
+      code: 'password'
+    }
+  )
+
+  console.log(event)
+
+  expect(event.kind).toEqual(rawPrivateListingDataTemplate.kind)
+  expect(event.tags).toEqual(rawPrivateListingDataTemplate.tags)
+  expect(event.content).toEqual(rawPrivateListingDataTemplate.content)
   expect(typeof event.created_at).toEqual('number')
   expect(event.pubkey).toEqual(publicKey)
 })

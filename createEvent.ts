@@ -145,7 +145,7 @@ export function rawPrivateListingData(
     pubkey: pubkey,
     kind: 30078,
     created_at: Math.floor(Date.now() / 1000),
-    tags: [['d', 'aka:classifiedListng']],
+    tags: [['d', 'aka:classifiedListing']],
     content: JSON.stringify(content)
   }
 

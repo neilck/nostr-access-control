@@ -89,3 +89,19 @@ export const classifiedListingNoBadgesTemplate = {
   id: '04f7c76aee46e9936ecf98804ada3a54ccfe580b63cc646e7aca8be913d2b62b',
   sig: '1be8cc1f1423fcb62a001536ac69f7e1caa4bbd03b65a6d92c49d8d0cae8d6381c1e0472148744be3b62a53d3a99a3c2742dd1ef5420c80782fc6fa6c4aab6d4'
 }
+
+export const rawPrivateListingDataTemplate = {
+  pubkey: '6af0f9de588f2c53cedcba26c5e2402e0d0aa64ec7b47c9f8d97b5bc562bab5f',
+  kind: 30078,
+  created_at: 1694949513,
+  tags: [
+    ['d', 'aka:classifiedListing'],
+    [
+      'a',
+      '30402:6af0f9de588f2c53cedcba26c5e2402e0d0aa64ec7b47c9f8d97b5bc562bab5f:sensitive-content',
+      'wss://relay'
+    ]
+  ],
+  content:
+    '{"summary":"Use the following code at the link below.","link":"https://www.domain.com/private","code":"password"}'
+}

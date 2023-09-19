@@ -6,7 +6,7 @@
     "declaration": true,
     "strict": true,
     "moduleResolution": "node",
-    "skipLibCheck": true,
+    "skipLibCheck": false,
     "esModuleInterop": true,
     "emitDeclarationOnly": true,
     "outDir": "lib",

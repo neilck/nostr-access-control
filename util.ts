@@ -21,13 +21,20 @@ const verifyEvent = (event: any) => {
  * @param aTag
  * @returns kind, pubkey, dTag
  */
-const parseATag = (aTag: string) => {
+const parseATag = (
+  aTag: string
+): {kind?: number; pubkey?: string; id?: string} => {
+  const value: {kind?: number; pubkey?: string; id?: string} = {}
   const tokens = aTag.split(':')
-  return {
-    kind: tokens[0],
-    pubkey: tokens[1],
-    dTag: tokens[2]
+  if (tokens.length > 0) {
+    const kind = Number(tokens[0])
+    if (!isNaN(kind)) value.kind = kind
   }
+
+  if (tokens.length > 1) value.pubkey = tokens[1]
+  if (tokens.length > 2) value.id = tokens[2]
+
+  return value
 }
 
 /**

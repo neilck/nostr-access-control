@@ -1,6 +1,6 @@
 {
   "name": "nostr-access-control",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "This proposal specifies how to implement decentralized access control with Nostr.",
   "files": [
     "./lib/**/*"
@@ -37,9 +37,9 @@
     "prettier": "^2.8.4",
     "ts-jest": "^29.1.0",
     "tsd": "^0.22.0",
-    "typescript": "^5.0.4"
+    "typescript": "^5.2.2"
   },
   "dependencies": {
-    "nostr-tools": "^1.13.1"
+    "nostr-tools": "^1.15.0"
   }
 }

@@ -106,7 +106,10 @@ const result = verifyEligibility({
 
 const {isEligible, badges, errors} = result
 
-if (isEligible) console.log('user is eligible to access the resource')
+if (isEligible)
+{
+  console.log('user is eligible to access the resource')
+}
 else {
   console.log('user is not eligible to access the resource')
 }

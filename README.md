@@ -2,7 +2,7 @@
 
 This library implements a decentralized identity model focused on access control with Nostr.
 
-See [Decentralized Digital Identity with Nostr](docs/intro.md) for a descriptive overview.
+See [Decentralized Digital Identity with Nostr](https://github.com/neilck/nostr-access-control/blob/main/docs/intro.md) for a descriptive overview.
 
 See [nac-demo-app](https://github.com/neilck/nac-demo-app) for a reference implemention app, which is also useful to get events for debugging.
 

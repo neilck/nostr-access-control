@@ -1,10 +1,10 @@
-import {
-  getSignature,
-  getEventHash,
-  getPublicKey,
-  Kind,
-  UnsignedEvent
-} from 'nostr-tools'
+import {UnsignedEvent} from 'nostr-tools'
+
+export const enum Kind {
+  BadgeDefinition = 30009,
+  BadgeAward = 8,
+  ClassifiedListing = 30402
+}
 
 /**
  * Returns a NIP-58 Badge Definition event

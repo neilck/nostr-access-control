@@ -1,4 +1,6 @@
 export * from './utils.ts'
 export * from './event-classes/nip58.ts'
+export * from './event-classes/nip99.ts'
 export * from './event-functions/createEvent.ts'
+export * from './verification/verifyEligibility.ts'
 export * from './verification/validateEvent.ts'

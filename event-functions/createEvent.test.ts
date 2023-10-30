@@ -18,7 +18,7 @@ import {
   classifiedListingTemplate,
   classifiedListingNoBadgesTemplate,
   rawPrivateListingDataTemplate
-} from './test-data'
+} from '../test/test-data'
 
 test('NIP-58 badge definition', () => {
   const privateKey = badgeIssuerPrivateKey

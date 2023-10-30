@@ -1,5 +1,5 @@
 import {Event, Kind} from 'nostr-tools'
-import {verifyEvent, getTagFirstValues} from './util'
+import {verifyEvent, getTagFirstValues} from '../utils'
 
 enum ValidateBadgeAwardError {
   ValidationError = 'VALIDATION_ERROR', // badge not valid Nostr event

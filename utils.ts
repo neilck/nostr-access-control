@@ -1,4 +1,5 @@
-import {validateEvent, verifySignature} from 'nostr-tools'
+import {Event, UnsignedEvent, validateEvent, verifySignature} from 'nostr-tools'
+import {isParameterizedReplaceableKind} from './kinds'
 
 /**
  * Verifies nostr event
@@ -57,4 +58,24 @@ const getTagFirstValues = (key: string, tags: string[][]) => {
   return firstValues
 }
 
-export {verifyEvent, parseATag, getTagFirstValues}
+// returns parameterized replaceable event identifier to be used as "a" tag value
+// returns undefined if not PR event or missing data
+const getPREIdentifier = (e: Event | UnsignedEvent) => {
+  if (!isParameterizedReplaceableKind(e.kind)) return undefined
+  if (e.pubkey == '') return undefined
+
+  let identifier = ''
+  for (let i = 0; i < e.tags.length; i++) {
+    const tag = e.tags[i]
+    if (tag.length > 1 && tag[0] == 'd') {
+      identifier = tag[1]
+      break
+    }
+  }
+
+  if (identifier == '') return undefined
+
+  return `${e.kind.toString()}:${e.pubkey}:${identifier}`
+}
+
+export {verifyEvent, parseATag, getTagFirstValues, getPREIdentifier}

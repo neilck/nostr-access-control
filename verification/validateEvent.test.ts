@@ -3,7 +3,7 @@ import {
   badgeIssuerPublicKey,
   classifiedListingTemplate,
   badgeAwardTemplate
-} from './test-data'
+} from '../test/test-data'
 import {validateBadgeAward, ValidateBadgeAwardError} from './validateEvent'
 test('badgeAwardEvent good', () => {
   const result = validateBadgeAward({
@@ -41,8 +41,8 @@ test('badgeAwardEvent not related', () => {
     classifiedListingEvent: classifiedListingTemplate
   })
 
-  expect(result.errors!.length).toEqual(2)
-  expect(result.errors![1]).toEqual(ValidateBadgeAwardError.NotRequired)
+  expect(result.errors!.length).toEqual(1)
+  expect(result.errors![0]).toEqual(ValidateBadgeAwardError.NotRequired)
 })
 
 test('badgeAwardEvent too many tags', () => {
@@ -55,6 +55,6 @@ test('badgeAwardEvent too many tags', () => {
     classifiedListingEvent: classifiedListingTemplate
   })
 
-  expect(result.errors!.length).toEqual(2)
-  expect(result.errors![1]).toEqual(ValidateBadgeAwardError.ATagError)
+  expect(result.errors!.length).toEqual(1)
+  expect(result.errors![0]).toEqual(ValidateBadgeAwardError.ATagError)
 })

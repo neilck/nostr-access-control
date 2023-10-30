@@ -1,19 +1,16 @@
-import {getPublicKey} from 'nostr-tools'
-import {verifyEligibility} from './index'
+import {verifyEligibility} from './verifyEligibility'
 import {
   userPublicKey,
-  badgeIssuerPublicKey,
   classifiedListingTemplate,
   classifiedListingNoBadgesTemplate,
   badgeAwardTemplate,
   badgeAwardTemplate2
-} from './test-data'
-import {ValidateBadgeAwardError} from './validateEvent'
+} from '../test/test-data'
 
 test('eligibility pass', () => {
   const result = verifyEligibility({
     userPublicKey: userPublicKey,
-    classifiedListingEvent: classifiedListingTemplate,
+    eventWithCriteria: classifiedListingTemplate,
     badgeAwardEvents: [badgeAwardTemplate, badgeAwardTemplate2]
   })
 
@@ -39,7 +36,7 @@ test('eligibility pass', () => {
 test('eligibility missing', () => {
   const result = verifyEligibility({
     userPublicKey: userPublicKey,
-    classifiedListingEvent: classifiedListingTemplate,
+    eventWithCriteria: classifiedListingTemplate,
     badgeAwardEvents: [badgeAwardTemplate]
   })
 
@@ -64,7 +61,7 @@ test('eligibility missing', () => {
 test('eligibility no badges', () => {
   const result = verifyEligibility({
     userPublicKey: userPublicKey,
-    classifiedListingEvent: classifiedListingNoBadgesTemplate,
+    eventWithCriteria: classifiedListingNoBadgesTemplate,
     badgeAwardEvents: []
   })
 

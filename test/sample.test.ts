@@ -1,4 +1,4 @@
-import {verifyEligibility} from './index'
+import {verifyEligibility} from '../verification/verifyEligibility'
 import {
   userPublicKey,
   classifiedListingTemplate,
@@ -8,7 +8,7 @@ import {
 test('sample', () => {
   const result = verifyEligibility({
     userPublicKey: userPublicKey,
-    classifiedListingEvent: classifiedListingTemplate,
+    eventWithCriteria: classifiedListingTemplate,
     badgeAwardEvents: [badgeAwardTemplate]
   })
 

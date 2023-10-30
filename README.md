@@ -1,40 +1,41 @@
 # Decentralized Access Control with Nostr (nostr-access-control)
 
-This library implements decentralized access control with Nostr.
+This library implements a decentralized identitty model focused on access control with Nostr.
 
 See [nac-demo-app](https://github.com/neilck/nac-demo-app) for a reference implemention app, which is also useful to get events for debugging.
 
 Access control is the process of determining if a user has rights to access a resource, consisting of authentication followed by authorization. Authentication in Nostr is simple: signing with a private key proves ownership of an associated public key. Authorization can be achieved by using badge events.
 
-Authorization starts with a resource owner defining an accessible resource by publishing a classified listing event. They include eligibility criteria by including one or more "a tags" to the event referencing badge definition events. A client determines a user's eligibility by checking if the user has been awarded all the required badges.
+## Developer Guide
 
-Acting as a badge issuer, the resource owner can code eligibility logic within their application before awarding a required badge to a user.
+Import as npm package:
 
-### Developer Guide
+- `npm -i nostr-access-control`
 
-- Install with `npm -i nostr-access-control`
-- Clone repo and run tests using Jest `jest -t "sample"`
-- Compile using Just
+Run tests (after cloning and `npm install`):
 
-### Roles
+- `npm run test` or `npm run test -t "sample"` to run single test
 
-There are 3 roles in decentralized access control.
+Complile using `just`
 
-- `Resource Owner` - A resource owner defines a resource and required badges to access.
-- `Badge Issuer` - A badge issuer defines badges and awards badges to users.
-- `User` - A user applies to access a resource based on their badges.
+### Project Folders
 
-### Events
+- `event-functions` folder contains simple functions that return unsigned Nostr events.
+- `event-classes` folder contains TypeScript classes, where methods `toUnsignedEvent()` and `toSignedEvent()` return Nostr events.
+- `verification` folder contains the `verifyEligibility(...)` function which determines a user's eligibility based on our model.
 
-Resource owners define resources by publishing `Classified Listings` events (NIP-99).
+## Events
 
-Resource owners specify required badges by including `a tags` in `Classified Listings` event pointing to Badge Definition events (NIP-58).
+### Creating Events
 
-Badge issuers define and award badges to users by publishing `Badge Definition` and `Award Badge` events (NIP-58).
+You can create `Badge Definition`, `Badge Award`, and `Classified Listing` events using either `event-functions` or `event-classes`.
+
+- Functions in `event-functions` minimally implement possible event values, and are meant to be copied and expanded in your own project.
+- Classes in `event-classes` are more flexible, and are meant to be used as imported classes within your project.
 
 ### Event Examples
 
-For these example events, a Nostr client (resource owner) will only display sensitive content (e.g. NIP-36) if a user has been awarded an Over 21 badge, issued by a indepdendent service (badge issuer).
+For these example events, a Nostr client can check if a user has been awarded an Over 21 badge, issued by a indepdendent service (badge issuer), before showing certain content.
 
 _Classified Listing_
 
@@ -46,7 +47,7 @@ _Classified Listing_
     ["d", "sensitive-content"],
     ["title", "Sensitive Content"],
     ["image", "https://ipsum.com/rated-r.png", "256x256"],
-    ["summary", "Sensitive content on Ipsum App"],
+    ["summary", "To view this content, you require an Over 21 badge."],
     ["a", "30009:<badge issuer pubkey>:over21", "wss://relay"]
   ],
   "pubkey": "<resource owner pubkey>",
@@ -89,9 +90,9 @@ _Badge Award_
 }
 ```
 
-### verifyEligibility
+## Verifying Eligibility
 
-verifyEligibility function takes in user's pubkey, the classified listing event, awarded badge events, and returns if user has all required badges.
+The `verification` folder contain the `verifyEligibility(...)` function which determines a user's eligibility based on events passed in.
 
 Also returns errors detected during validation of events.
 
@@ -114,20 +115,31 @@ else {
   console.log('user is not eligible to access the resource')
 }
 
-if (errors) {
-  console.log(`Overall errors: ${errors}`)
+type EligibilityResult = {
+  isEligible: boolean
+  badges?: ValidateBadgeAwardResult[]
+  errors?: string[]
 }
 
-if (badges) {
-  badges.forEach(badge => {
-    const {d, isValid, errors} = badge
-    if (isValid) {
-      console.log(`User awarded required badge ${badge.d}`)
-    } else {
-      console.log(
-        `Error(s) with awarded badge ${badge.d}. Errors: ${badge.errors}`
-      )
-    }
-  })
-}
+const verifyEligibility = (props: {
+  userPublicKey: string
+  eventWithCriteria: Event
+  badgeAwardEvents: Event[]
+}): EligibilityResult => {...}
 ```
+
+#### Interpreting Results
+
+The `verifyEligibility` function determines if user with `userPublicKey` is eligible for `eventWithCriteria`, based on `badgeAwardEvents`.
+
+The `verifyEligibility` function returns result as `EligilibityResult`.
+
+- `isEligible` boolean is the overall result
+- `errors` is a string array of non-badge specific reasons why the user is not eligible.
+- `badges` is an array of ValidateBadgeAwardResult objects, which contain the reasons why a required badge in the eligibility criteria is not considered awarded.
+
+If `isEligible` is true, you should expect a `ValidateBadgeAwardResult` item in `badges` for each required badge, where `isValid` is true.
+
+When `isElibile` is not true, you can check `errors` in `EligibilityResult` or `ValidateBadgeAwardResult` items for the reason why user is not eligible.
+
+It is possible that `isEligible` is true, but there exists a `ValidateBadgeAwardResult` where `isValid` is not true, when the `badgeAwardEvents` parameter contains a non-relevant badge award event.

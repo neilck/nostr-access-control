@@ -1,10 +1,10 @@
 # Decentralized Access Control with Nostr (nostr-access-control)
 
-This library implements a decentralized identitty model focused on access control with Nostr.
+This library implements a decentralized identity model focused on access control with Nostr.
+
+See [Decentralized Digital Identity with Nostr](docs/intro.md) for a descriptive overview.
 
 See [nac-demo-app](https://github.com/neilck/nac-demo-app) for a reference implemention app, which is also useful to get events for debugging.
-
-Access control is the process of determining if a user has rights to access a resource, consisting of authentication followed by authorization. Authentication in Nostr is simple: signing with a private key proves ownership of an associated public key. Authorization can be achieved by using badge events.
 
 ## Developer Guide
 
@@ -23,10 +23,6 @@ Complile using `just`
 - `event-functions` folder contains simple functions that return unsigned Nostr events.
 - `event-classes` folder contains TypeScript classes, where methods `toUnsignedEvent()` and `toSignedEvent()` return Nostr events.
 - `verification` folder contains the `verifyEligibility(...)` function which determines a user's eligibility based on our model.
-
-## Events
-
-### Creating Events
 
 You can create `Badge Definition`, `Badge Award`, and `Classified Listing` events using either `event-functions` or `event-classes`.
 

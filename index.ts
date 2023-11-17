@@ -1,4 +1,5 @@
 export * from './utils.ts'
+export * from './event-classes/attestationEvent.ts'
 export * from './event-classes/nip58.ts'
 export * from './event-classes/nip99.ts'
 export * from './event-functions/createEvent.ts'

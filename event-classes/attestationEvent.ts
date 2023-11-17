@@ -1,4 +1,4 @@
-import {Nip58Kind, BadgeDefinitionTagID} from './nip58'
+import {Nip58Kind, BadgeDefinitionTagID, BadgeAwardTagID} from './nip58'
 import {Nip99Kind, ClassifiedListingTagID} from './nip99'
 
 import {
@@ -130,108 +130,6 @@ export class Attestation {
     this.pubkey = getPublicKey(privateKey)
     const event =
       this.toUnsignedEvent() as VerifiedEvent<AttestationKind.TextNote>
-    return finishEvent(event, privateKey)
-  }
-}
-
-/**
- * Known tag IDs for Badge Award event
- * "Ext" prefix indicates additional IDs used by akaprofiles
- * e.g.
- * ["a", "30009:<issuer pubkey>:<badge identifier>"]
- * ["a", "30009:<issuer pubkey>:<badge identifier>", "wss://relay.damus.io"]
- * ["p", "<awardee pubkey>"],
- * ["p", "<awardee pubkey>", "wss://relay.damus.io"],
- *
- *  * ExtClient
- * - name of client used to issue event
- */
-export enum BadgeAwardTagID {
-  AwardedBadge = 'a',
-  AwardeePubkey = 'p',
-  ExtClient = 'client'
-}
-
-export type BadgeAwardProps = {
-  awardedBadge: string
-  awardedBadgeRelay?: string
-  awardeePubkey: string
-  awardeeRelay?: string
-  client?: string
-  pubkey?: string
-}
-
-export class BadgeAward {
-  readonly kind = Nip58Kind.BadgeAward
-  client: string
-  pubkey: string
-  content: string = ''
-  awardedBadge: string[]
-
-  private awardees: Record<string, string[]> = {}
-  private otherTags: Record<string, string[]> = {}
-
-  public constructor(props: BadgeAwardProps) {
-    this.awardedBadge = props.awardedBadgeRelay
-      ? [
-          BadgeAwardTagID.AwardedBadge,
-          props.awardedBadge,
-          props.awardedBadgeRelay
-        ]
-      : [BadgeAwardTagID.AwardedBadge, props.awardedBadge]
-    this.awardees[BadgeAwardTagID.AwardeePubkey] = props.awardeeRelay
-      ? [BadgeAwardTagID.AwardeePubkey, props.awardeePubkey, props.awardeeRelay]
-      : [BadgeAwardTagID.AwardeePubkey, props.awardeePubkey]
-
-    this.client = props.client ? props.client : ''
-    this.pubkey = props.pubkey ? props.pubkey : ''
-  }
-
-  addAwardee(pubkey: string, relay?: string) {
-    this.awardees[pubkey] = relay
-      ? [BadgeAwardTagID.AwardeePubkey, pubkey, relay]
-      : [BadgeAwardTagID.AwardeePubkey, pubkey]
-  }
-
-  removeAwardee(pubkey: string) {
-    delete this.awardees[pubkey]
-  }
-
-  addOtherTag(tag: string[]) {
-    this.otherTags[tag[0]] = tag
-  }
-
-  removeOtherTag(identifier: string) {
-    delete this.otherTags[identifier]
-  }
-
-  toUnsignedEvent() {
-    const event: UnsignedEvent<Nip58Kind.BadgeAward> = {
-      kind: this.kind,
-      pubkey: this.pubkey,
-      created_at: Math.floor(Date.now() / 1000),
-      tags: [],
-      content: this.content
-    }
-
-    event.tags.push(this.awardedBadge)
-    if (this.client != '')
-      event.tags.push([BadgeDefinitionTagID.ExtClient, this.client])
-
-    for (let id in this.awardees) {
-      event.tags.push(this.awardees[id])
-    }
-
-    for (let id in this.otherTags) {
-      event.tags.push(this.otherTags[id])
-    }
-
-    return event
-  }
-
-  toSignedEvent(privateKey: string) {
-    this.pubkey = getPublicKey(privateKey)
-    const event = this.toUnsignedEvent() as VerifiedEvent<Nip58Kind.BadgeAward>
     return finishEvent(event, privateKey)
   }
 }

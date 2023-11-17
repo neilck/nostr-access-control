@@ -5,6 +5,7 @@ import {
   BadgeAward
 } from './nip58'
 import {ClassifiedListingProps, ClassifiedListing} from './nip99'
+import {AttestationProps, Attestation} from './attestationEvent'
 import {
   badgeIssuerPublicKey,
   badgeIssuerPrivateKey,
@@ -16,8 +17,12 @@ import {
 import {
   badgeDefinitionTemplate,
   badgeAwardTemplate,
-  classifiedListingTemplate
+  classifiedListingTemplate,
+  badgeAttestationTemplate,
+  awardAttestationTemplate,
+  listingAttestationTemplate
 } from './nip.test-data'
+import exp from 'constants'
 
 test('badgedefinition', () => {
   const props: BadgeDefinitionProps = {
@@ -49,6 +54,28 @@ test('badgedefinition', () => {
   expect(identifier).toEqual(
     '30009:0d185ebea8028420dcc8b10b19876514d22f0eaeeb2378cc3e9cbb8c0b616bab:bravery'
   )
+
+  const attestation = new Attestation({referencedEvent: event})
+  const signedEvent = attestation.toSignedEvent(resourceOwnerPrivateKey)
+
+  expect(signedEvent.kind).toEqual(badgeAttestationTemplate.kind)
+  signedEvent.tags.forEach(tag => {
+    if (tag.length > 1) {
+      switch (tag[0]) {
+        case 'e':
+          expect(tag[1]).toEqual(event.id)
+          break
+        case 'a':
+          expect(tag[1]).toEqual(identifier)
+          break
+      }
+    }
+  })
+  expect(signedEvent.content).toContain(
+    'Attestation for badge definition event (Medal of Bravery).'
+  )
+  expect(typeof signedEvent.created_at).toEqual('number')
+  expect(signedEvent.pubkey).toEqual(resourceOwnerPublicKey)
 })
 
 test('badgeaward', () => {
@@ -70,6 +97,23 @@ test('badgeaward', () => {
   expect(event.content).toEqual(badgeAwardTemplate.content)
   expect(typeof event.created_at).toEqual('number')
   expect(event.pubkey).toEqual(resourceOwnerPublicKey)
+
+  const attestation = new Attestation({referencedEvent: event})
+  const signedEvent = attestation.toSignedEvent(resourceOwnerPrivateKey)
+
+  expect(signedEvent.kind).toEqual(awardAttestationTemplate.kind)
+  signedEvent.tags.forEach(tag => {
+    if (tag.length > 1) {
+      switch (tag[0]) {
+        case 'e':
+          expect(tag[1]).toEqual(event.id)
+          break
+      }
+    }
+  })
+  expect(signedEvent.content).toContain('Attestation for badge award event.')
+  expect(typeof signedEvent.created_at).toEqual('number')
+  expect(signedEvent.pubkey).toEqual(resourceOwnerPublicKey)
 })
 
 test('classifiedlisting', () => {
@@ -101,4 +145,31 @@ test('classifiedlisting', () => {
   expect(event.content).toEqual(classifiedListingTemplate.content)
   expect(typeof event.created_at).toEqual('number')
   expect(event.pubkey).toEqual(resourceOwnerPublicKey)
+
+  const identifier = classifiedListing.getPREIdentifier()
+  expect(identifier).toEqual(
+    '30402:6af0f9de588f2c53cedcba26c5e2402e0d0aa64ec7b47c9f8d97b5bc562bab5f:lorem-ipsum'
+  )
+
+  const attestation = new Attestation({referencedEvent: event})
+  const signedEvent = attestation.toSignedEvent(badgeIssuerPrivateKey)
+
+  expect(signedEvent.kind).toEqual(listingAttestationTemplate.kind)
+  signedEvent.tags.forEach(tag => {
+    if (tag.length > 1) {
+      switch (tag[0]) {
+        case 'e':
+          expect(tag[1]).toEqual(event.id)
+          break
+        case 'a':
+          expect(tag[1]).toEqual(identifier)
+          break
+      }
+    }
+  })
+  expect(signedEvent.content).toContain(
+    'Attestation for classified listing event (Lorem Ipsum).'
+  )
+  expect(typeof signedEvent.created_at).toEqual('number')
+  expect(signedEvent.pubkey).toEqual(badgeIssuerPublicKey)
 })

@@ -24,7 +24,7 @@ Complile using `just`
 - `event-classes` folder contains TypeScript classes, where methods `toUnsignedEvent()` and `toSignedEvent()` return Nostr events.
 - `verification` folder contains the `verifyEligibility(...)` function which determines a user's eligibility based on our model.
 
-You can create `Badge Definition`, `Badge Award`, and `Classified Listing` events using either `event-functions` or `event-classes`.
+You can create `Badge Definition`, `Badge Award`, and `Classified Listing` events using either `event-functions` or `event-classes`. `Attestation` event only exists in `event-classes`.
 
 - Functions in `event-functions` minimally implement possible event values, and are meant to be copied and expanded in your own project.
 - Classes in `event-classes` are more flexible, and are meant to be used as imported classes within your project.
@@ -85,6 +85,26 @@ _Badge Award_
   "sig": "..."
 }
 ```
+
+_Attestation Event_
+
+```json
+{
+  "kind": 1,
+  "created_at": 1677657600,
+  "tags": [
+    ["e", "<referenced event id>"],
+    ["a", "30009:<badge issuer pubkey>:over21"]
+  ],
+  "content": "Attestation for badge definition event (Over 21).  Signed on Fri, 17 Nov 2023 09:51:57 GMT",
+  "pubkey": "<attester pubkey>",
+  "id": "...",
+  "sig": "..."
+}
+```
+
+An `Attestation Event` is a Kind 1 note, which references another event via `e` and `a` tags.
+Signed by an application/platform key to attest the information in the referenced event was processed by the application and is correct. Alternative to NIP-03 based on centralized trust.
 
 ## Verifying Eligibility
 

@@ -14,6 +14,7 @@ export const enum Kind {
  * @param props.name - badge name
  * @param props.description - badge description
  * @param props.image - badge image url
+ * @param props.applyURL - url for users to apply for this badge
  * @returns  - unsigned nostr event
  */
 export function badgeDefinitionEvent(props: {
@@ -22,8 +23,9 @@ export function badgeDefinitionEvent(props: {
   name: string
   description: string
   image: string
+  applyURL: string
 }): UnsignedEvent<Kind.BadgeDefinition> {
-  const {pubkey, d, name, description, image} = props
+  const {pubkey, d, name, description, image, applyURL} = props
   const event: UnsignedEvent<Kind.BadgeDefinition> = {
     pubkey: pubkey,
     kind: Kind.BadgeDefinition,
@@ -32,7 +34,8 @@ export function badgeDefinitionEvent(props: {
       ['d', d],
       ['name', name],
       ['description', description],
-      ['image', image]
+      ['image', image],
+      ['applyURL', applyURL]
     ],
     content: ''
   }

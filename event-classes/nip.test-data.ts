@@ -9,6 +9,7 @@ export const badgeDefinitionTemplate = {
     ['image', 'https://nostr.academy/awards/bravery.png'],
     ['thumb', 'https://nostr.academy/awards/bravery_258x256.png'],
     ['client', 'akaprofiles'],
+    ['applyURL', 'https://ageverifier.com/badgeaward'],
     [
       'a',
       '30009:3ef9157164de5d945264dd2c8b4759d868394f5427379b4384762a8b369b08d0:badge1'

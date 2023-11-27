@@ -24,7 +24,8 @@ export const badgeDefinitionTemplate = {
     ['d', 'over21'],
     ['name', 'Over 21'],
     ['description', 'User is over 21 years of age.'],
-    ['image', 'https://ageverifier.com/images/over21.png']
+    ['image', 'https://ageverifier.com/images/over21.png'],
+    ['applyURL', 'https://ageverifier.com/badgeaward']
   ],
   content: '',
   pubkey: badgeIssuerPublicKey,

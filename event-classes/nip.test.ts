@@ -30,7 +30,8 @@ test('badgedefinition', () => {
     name: 'Medal of Bravery',
     description: 'Awarded to users demonstrating bravery',
     image: 'https://nostr.academy/awards/bravery.png',
-    thumbnail: 'https://nostr.academy/awards/bravery_258x256.png'
+    thumbnail: 'https://nostr.academy/awards/bravery_258x256.png',
+    applyURL: 'https://ageverifier.com/badgeaward'
   }
   const badge = new BadgeDefinition(props)
   badge.client = 'akaprofiles'

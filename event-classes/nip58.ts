@@ -22,6 +22,7 @@ export const enum Nip58Kind {
  * ["client, "akaprofiles"]
  * ["a", "30009:<issuer pubkey>:<badge identifier>"]
  * ["a", "30009:<issuer pubkey>:<badge identifier>", "wss://relay.damus.io"]
+ * ["applyURL", "https://ageverifier.com/badgeapply"]
  *
  * ExtClient
  * - name of client used to issue event
@@ -35,7 +36,8 @@ export enum BadgeDefinitionTagID {
   Image = 'image',
   Thumbnail = 'thumb',
   ExtRequiredBadge = 'a',
-  ExtClient = 'client'
+  ExtClient = 'client',
+  ApplyURL = 'applyURL'
 }
 
 export type BadgeDefinitionProps = {
@@ -47,6 +49,7 @@ export type BadgeDefinitionProps = {
   content?: string
   client?: string
   pubkey?: string
+  applyURL?: string
 }
 
 export class BadgeDefinition {
@@ -59,6 +62,7 @@ export class BadgeDefinition {
   client: string
   pubkey: string
   content: string
+  applyURL: string
 
   private reqBadges: Record<string, string[]> = {}
   private otherTags: Record<string, string[]> = {}
@@ -72,6 +76,7 @@ export class BadgeDefinition {
     this.content = props.content ? props.content : ''
     this.client = props.client ? props.client : ''
     this.pubkey = props.pubkey ? props.pubkey : ''
+    this.applyURL = props.applyURL ? props.applyURL : ''
   }
 
   addRequiredBadge(identifier: string, relay?: string) {
@@ -114,6 +119,9 @@ export class BadgeDefinition {
       event.tags.push([BadgeDefinitionTagID.Thumbnail, this.thumbnail])
     if (this.client != '')
       event.tags.push([BadgeDefinitionTagID.ExtClient, this.client])
+    if (this.applyURL != '') {
+      event.tags.push([BadgeDefinitionTagID.ApplyURL, this.applyURL])
+    }
     for (let id in this.reqBadges) {
       event.tags.push(this.reqBadges[id])
     }

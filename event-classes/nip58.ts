@@ -10,6 +10,12 @@ export const enum Nip58Kind {
   BadgeAward = 8
 }
 
+export const BadgeTypeLabelNamespace = 'com.akaprofiles.badge.type'
+export const enum BadgeType {
+  Badge = 'BADGE',
+  Group = 'GROUP'
+}
+
 /**
  * Known tag IDs for Badge Definition event
  * "Ext" prefix indicates additional IDs used by akaprofiles
@@ -20,6 +26,8 @@ export const enum Nip58Kind {
  * ["image", "https://ageverifier.com/images/over21.png"]
  * ["thumb", "https://ageverifier.com/images/over21_128x128.png"]
  * ["client, "akaprofiles"]
+ * ["L", "com.akaprofiles.badge.type"]
+ * "l", "BADGE", "com.akaprofiles.badge.type"]
  * ["a", "30009:<issuer pubkey>:<badge identifier>"]
  * ["a", "30009:<issuer pubkey>:<badge identifier>", "wss://relay.damus.io"]
  * ["applyURL", "https://ageverifier.com/badgeapply"]
@@ -28,6 +36,10 @@ export const enum Nip58Kind {
  * - name of client used to issue event
  * ExtRequiredBadge
  * - one or more previously awarded badges required to automatically award this badge
+ * ExtApplyURL
+ * - self-service URL for users to apply for badge
+ * ExtBadgeType
+ * - either GROUP or BADGE, indicating how apps should interpret this badge
  */
 export enum BadgeDefinitionTagID {
   Identifier = 'd',
@@ -37,7 +49,9 @@ export enum BadgeDefinitionTagID {
   Thumbnail = 'thumb',
   ExtRequiredBadge = 'a',
   ExtClient = 'client',
-  ApplyURL = 'applyURL'
+  ExtApplyURL = 'applyURL',
+  ExtBadgeTypeNamespace = 'L',
+  ExtBadgeType = 'l'
 }
 
 export type BadgeDefinitionProps = {
@@ -45,6 +59,7 @@ export type BadgeDefinitionProps = {
   description: string
   image: string
   identifier: string
+  type: BadgeType
   thumbnail?: string
   content?: string
   client?: string
@@ -59,6 +74,7 @@ export class BadgeDefinition {
   image: string
   thumbnail: string
   identifier: string
+  type: BadgeType
   client: string
   pubkey: string
   content: string
@@ -72,6 +88,7 @@ export class BadgeDefinition {
     this.description = props.description
     this.image = props.image
     this.identifier = props.identifier
+    this.type = props.type
     this.thumbnail = props.thumbnail ? props.thumbnail : ''
     this.content = props.content ? props.content : ''
     this.client = props.client ? props.client : ''
@@ -115,13 +132,23 @@ export class BadgeDefinition {
     event.tags.push([BadgeDefinitionTagID.Name, this.name])
     event.tags.push([BadgeDefinitionTagID.Description, this.description])
     event.tags.push([BadgeDefinitionTagID.Image, this.image])
+
     if (this.thumbnail != '')
       event.tags.push([BadgeDefinitionTagID.Thumbnail, this.thumbnail])
     if (this.client != '')
       event.tags.push([BadgeDefinitionTagID.ExtClient, this.client])
     if (this.applyURL != '') {
-      event.tags.push([BadgeDefinitionTagID.ApplyURL, this.applyURL])
+      event.tags.push([BadgeDefinitionTagID.ExtApplyURL, this.applyURL])
     }
+    event.tags.push([
+      BadgeDefinitionTagID.ExtBadgeTypeNamespace,
+      BadgeTypeLabelNamespace
+    ])
+    event.tags.push([
+      BadgeDefinitionTagID.ExtBadgeType,
+      this.type,
+      BadgeTypeLabelNamespace
+    ])
     for (let id in this.reqBadges) {
       event.tags.push(this.reqBadges[id])
     }

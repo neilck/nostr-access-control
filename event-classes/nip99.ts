@@ -9,16 +9,50 @@ export const enum Nip99Kind {
   ClassifiedListing = 30402
 }
 
+export const ListingTypeLabelNamespace = 'com.akaprofiles.listing.type'
+export const enum ListingType {
+  Classified = 'CLASSIFIED',
+  Offer = 'OFFER'
+}
+
+/**
+ * Known tag IDs for Classifed Listing event
+ * "Ext" prefix indicates additional IDs used by akaprofiles
+ * e.g.
+ * ["d","member-discount"]
+ * ["name", "20% Off Coupon Code"]
+ * ["description", "Group members receive 20% off all merch in March."]
+ * ["image", "https://merch.com/images/offer20.png"]
+ * ["thumb", "https://merch.com/images/offer20_128x128.png"]
+ * ["L", "com.akaprofiles.listing.type"]
+ * "l", "OFFER", "com.akaprofiles.listing.type"]
+ * ["client, "akaprofiles"]
+ * ["a", "30402:<issuer pubkey>:<group identifier>"]
+ * ["applyURL", "https://akaprofiles.com/offer/1234"]
+ *
+ * ExtClient
+ * - name of client used to issue event
+ * ExtRequiredBadge
+ * - one or more previously awarded badges required to automatically award this offer
+ * ExtApplyURL
+ * - self-service URL for users to apply for offer
+ * ExtBadgeType
+ * - either CLASSIFIED or OFFER, indicating how apps should interpret this listing
+ *   (always OFFER within akaprofiles context)
+ */
 export enum ClassifiedListingTagID {
   Identifier = 'd',
   Title = 'title',
   Summary = 'summary',
   Image = 'image',
-  Thumbnail = 'thunb',
+  Thumbnail = 'thumb',
 
   PublishedAt = 'published_at',
   ExtRequiredBadge = 'a',
-  ExtClient = 'client'
+  ExtClient = 'client',
+  ExtApplyURL = 'applyURL',
+  ExtListingTypeNamespace = 'L',
+  ExtListingType = 'l'
 }
 
 export type ClassifiedListingProps = {
@@ -26,11 +60,13 @@ export type ClassifiedListingProps = {
   summary: string
   image: string
   identifier: string
+  type: ListingType
   content: string
   thumbnail?: string
   client?: string
   pubkey?: string
   published_at?: number
+  applyURL?: string
 }
 
 export class ClassifiedListing {
@@ -40,10 +76,12 @@ export class ClassifiedListing {
   image: string
   thumbnail: string
   identifier: string
+  type: ListingType
   client: string
   pubkey: string
   content: string
   published_at: number
+  applyURL: string
 
   private reqBadges: Record<string, string[]> = {}
   private otherTags: Record<string, string[]> = {}
@@ -54,9 +92,11 @@ export class ClassifiedListing {
     this.image = props.image
     this.identifier = props.identifier
     this.thumbnail = props.thumbnail ? props.thumbnail : ''
+    this.type = props.type
     this.content = props.content ? props.content : ''
     this.client = props.client ? props.client : ''
     this.pubkey = props.pubkey ? props.pubkey : ''
+    this.applyURL = props.applyURL ? props.applyURL : ''
     this.published_at = props.published_at ? props.published_at : 0
   }
 
@@ -100,6 +140,18 @@ export class ClassifiedListing {
       event.tags.push([ClassifiedListingTagID.Thumbnail, this.thumbnail])
     if (this.client != '')
       event.tags.push([ClassifiedListingTagID.ExtClient, this.client])
+    if (this.applyURL != '') {
+      event.tags.push([ClassifiedListingTagID.ExtApplyURL, this.applyURL])
+    }
+    event.tags.push([
+      ClassifiedListingTagID.ExtListingTypeNamespace,
+      ListingTypeLabelNamespace
+    ])
+    event.tags.push([
+      ClassifiedListingTagID.ExtListingType,
+      this.type,
+      ListingTypeLabelNamespace
+    ])
     if (this.published_at > 0)
       event.tags.push([
         ClassifiedListingTagID.PublishedAt,

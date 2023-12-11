@@ -10,6 +10,8 @@ export const badgeDefinitionTemplate = {
     ['thumb', 'https://nostr.academy/awards/bravery_258x256.png'],
     ['client', 'akaprofiles'],
     ['applyURL', 'https://ageverifier.com/badgeaward'],
+    ['L', 'com.akaprofiles.badge.type'],
+    ['l', 'BADGE', 'com.akaprofiles.badge.type'],
     [
       'a',
       '30009:3ef9157164de5d945264dd2c8b4759d868394f5427379b4384762a8b369b08d0:badge1'
@@ -90,8 +92,10 @@ export const classifiedListingTemplate = {
     ['title', 'Lorem Ipsum'],
     ['summary', 'More lorem ipsum that is a little more than the title'],
     ['image', 'https://url.to.img'],
-    ['thunb', 'https://url.to_128x128.img'],
+    ['thumb', 'https://url.to_128x128.img'],
     ['client', 'akaprofiles'],
+    ['L', 'com.akaprofiles.listing.type'],
+    ['l', 'OFFER', 'com.akaprofiles.listing.type'],
     ['published_at', '1296962229'],
     [
       'a',

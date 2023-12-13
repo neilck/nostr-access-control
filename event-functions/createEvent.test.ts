@@ -34,7 +34,7 @@ test('NIP-58 badge definition', () => {
     configURL: 'https://ageverifier.com/config'
   })
 
-  console.log(event)
+  // console.log(event)
 
   expect(event.kind).toEqual(badgeDefinitionTemplate.kind)
   expect(event.tags).toEqual(badgeDefinitionTemplate.tags)
@@ -53,7 +53,7 @@ test('NIP-58 badge award', () => {
     awardedPubkey: userPublicKey
   })
 
-  console.log(event)
+  // console.log(event)
 
   let aTagValue = ''
   let pTagValue = ''
@@ -89,7 +89,7 @@ test('NIP-58 badge award 2', () => {
     awardedPubkey: userPublicKey
   })
 
-  console.log(event)
+  // console.log(event)
 
   let aTagValue = ''
   let pTagValue = ''
@@ -132,7 +132,7 @@ test('NIP-99 classified listing', () => {
     badgeDefRefsRelays: ['wss://relay', 'wss://relay']
   })
 
-  console.log(event)
+  // console.log(event)
 
   expect(event.kind).toEqual(classifiedListingTemplate.kind)
   expect(event.tags).toEqual(classifiedListingTemplate.tags)
@@ -155,7 +155,7 @@ test('NIP-99 classified listing no badges', () => {
     badgeDefRefsRelays: []
   })
 
-  console.log(event)
+  // console.log(event)
 
   expect(event.kind).toEqual(classifiedListingNoBadgesTemplate.kind)
   expect(event.tags).toEqual(classifiedListingNoBadgesTemplate.tags)
@@ -182,7 +182,7 @@ test('raw private listing data', () => {
     }
   )
 
-  console.log(event)
+  // console.log(event)
 
   expect(event.kind).toEqual(rawPrivateListingDataTemplate.kind)
   expect(event.tags).toEqual(rawPrivateListingDataTemplate.tags)

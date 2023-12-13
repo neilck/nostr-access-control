@@ -31,6 +31,7 @@ export const enum BadgeType {
  * ["a", "30009:<issuer pubkey>:<badge identifier>"]
  * ["a", "30009:<issuer pubkey>:<badge identifier>", "wss://relay.damus.io"]
  * ["applyURL", "https://ageverifier.com/badgeapply"]
+ * ["configURL", "https://ageverifier.com/config"]
  *
  * ExtClient
  * - name of client used to issue event
@@ -38,6 +39,8 @@ export const enum BadgeType {
  * - one or more previously awarded badges required to automatically award this badge
  * ExtApplyURL
  * - self-service URL for users to apply for badge
+ * ExtConfigURL
+ * - self-service URL for users to configure the badge
  * ExtBadgeType
  * - either GROUP or BADGE, indicating how apps should interpret this badge
  */
@@ -50,6 +53,7 @@ export enum BadgeDefinitionTagID {
   ExtRequiredBadge = 'a',
   ExtClient = 'client',
   ExtApplyURL = 'applyURL',
+  ExtConfigURL = 'configURL',
   ExtBadgeTypeNamespace = 'L',
   ExtBadgeType = 'l'
 }
@@ -65,6 +69,7 @@ export type BadgeDefinitionProps = {
   client?: string
   pubkey?: string
   applyURL?: string
+  configURL?: string
 }
 
 export class BadgeDefinition {
@@ -79,6 +84,7 @@ export class BadgeDefinition {
   pubkey: string
   content: string
   applyURL: string
+  configURL: string
 
   private reqBadges: Record<string, string[]> = {}
   private otherTags: Record<string, string[]> = {}
@@ -94,6 +100,7 @@ export class BadgeDefinition {
     this.client = props.client ? props.client : ''
     this.pubkey = props.pubkey ? props.pubkey : ''
     this.applyURL = props.applyURL ? props.applyURL : ''
+    this.configURL = props.configURL ? props.configURL : ''
   }
 
   addRequiredBadge(identifier: string, relay?: string) {
@@ -139,6 +146,9 @@ export class BadgeDefinition {
       event.tags.push([BadgeDefinitionTagID.ExtClient, this.client])
     if (this.applyURL != '') {
       event.tags.push([BadgeDefinitionTagID.ExtApplyURL, this.applyURL])
+    }
+    if (this.configURL != '') {
+      event.tags.push([BadgeDefinitionTagID.ExtConfigURL, this.configURL])
     }
     event.tags.push([
       BadgeDefinitionTagID.ExtBadgeTypeNamespace,

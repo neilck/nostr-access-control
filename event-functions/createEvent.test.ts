@@ -30,7 +30,8 @@ test('NIP-58 badge definition', () => {
     name: 'Over 21',
     description: 'User is over 21 years of age.',
     image: 'https://ageverifier.com/images/over21.png',
-    applyURL: 'https://ageverifier.com/badgeaward'
+    applyURL: 'https://ageverifier.com/badgeaward',
+    configURL: 'https://ageverifier.com/config'
   })
 
   console.log(event)
